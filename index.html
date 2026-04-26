@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>星期八 · 小八</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; font-family: -apple-system, sans-serif; background-color: #f7f3ee; display: flex; align-items: center; justify-content: center; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: -apple-system, "Helvetica Neue", sans-serif; background-color: #f7f3ee; display: flex; align-items: center; justify-content: center; }
         .container { text-align: center; width: 90%; max-width: 800px; }
-        h1 { font-size: 48px; color: #333; margin-bottom: 10px; }
+        h1 { font-size: 48px; color: #333; margin-bottom: 10px; font-weight: bold; }
         .tagline { color: #666; font-size: 18px; margin-bottom: 50px; }
         .cards { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .card { background: white; border-radius: 20px; padding: 30px 20px; width: 160px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.3s; border: 1px solid #eee; }
+        .card { background: white; border-radius: 20px; padding: 30px 20px; width: 160px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.3s ease; border: 1px solid #eee; }
         .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .icon { font-size: 40px; margin-bottom: 15px; display: block; }
-        .card-title { font-weight: bold; color: #333; }
+        .card-title { font-weight: bold; color: #333; font-size: 18px; }
     </style>
 </head>
 <body>
@@ -21,38 +21,48 @@
         <h1>星期八 · 小八</h1>
         <p class="tagline">一个懂你、能扛事的职场 AI 伙伴</p >
         <div class="cards">
-            <div class="card" onclick="openChat('生成今日摸鱼报告')">
+            <div class="card" onclick="startChat('生成今日摸鱼报告')">
                 <span class="icon">🐟</span>
                 <div class="card-title">摸鱼气象站</div>
             </div>
-            <div class="card" onclick="openChat('开启老板潜台词翻译')">
+            <div class="card" onclick="startChat('开启老板潜台词翻译')">
                 <span class="icon">🔍</span>
                 <div class="card-title">潜台词翻译</div>
             </div>
-            <div class="card" onclick="openChat('抽取今日上岸好运')">
+            <div class="card" onclick="startChat('抽取今日上岸好运')">
                 <span class="icon">🎁</span>
                 <div class="card-title">好运盲盒</div>
             </div>
         </div>
     </div>
 
-    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
-   <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-sdk/1.0.0-beta.4/index.js"></script>
-<script>
-    // 初始化小八：不需要 pat_token，简单直接
-    const chatClient = new CozeWebSDK.WebChatClient({
-        config: {
-            bot_id: '7632656374320594990', 
-        },
-        componentProps: {
-            title: '星期八 · 小八',
-        },
-    });
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-sdk/1.0.0-beta.4/index.js"></script>
+    <script>
+        const chatClient = new CozeWebSDK.WebChatClient({
+            config: {
+                bot_id: '7632656374320594990', // 你的小八 ID
+            },
+            componentProps: {
+                title: '星期八 · 小八',
+            },
+            auth: {
+                type: 'unauth', // 采用免密模式，避开 Token 报错
+            }
+        });
 
-    // 按钮接通逻辑
-    function openChat(msg) {
-        chatClient.showBot();
-        // 如果想让小八自动说话，直接在这里写逻辑
-        // 注意：非登录模式下 sendMessage 权限可能受限，能弹出对话框就是胜利！
-    }
-</script>
+        function startChat(msg) {
+            chatClient.showBot();
+            // 在免密模式下，我们需要给 SDK 一点点反应时间来建立连接
+            setTimeout(() => {
+                // 如果 SDK 内部加载完成，尝试发送消息
+                if (chatClient.sendMessage) {
+                    chatClient.sendMessage({
+                        content: msg,
+                        type: 'text'
+                    });
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
