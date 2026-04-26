@@ -5,49 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>星期八 · 小八</title>
     <style>
-        body { background-color: #F5F1EB; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; color: #4A4A4A; }
-        .header { text-align: center; margin-bottom: 40px; }
-        h1 { font-size: 3rem; margin: 0; color: #3A3A3A; }
-        .cards { display: flex; gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 15px; width: 150px; text-align: center; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .card:hover { transform: translateY(-5px); }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: -apple-system, sans-serif; background-color: #f7f3ee; display: flex; align-items: center; justify-content: center; }
+        .container { text-align: center; width: 90%; max-width: 800px; }
+        h1 { font-size: 48px; color: #333; margin-bottom: 10px; }
+        .tagline { color: #666; font-size: 18px; margin-bottom: 50px; }
+        .cards { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .card { background: white; border-radius: 20px; padding: 30px 20px; width: 160px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.3s; border: 1px solid #eee; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .icon { font-size: 40px; margin-bottom: 15px; display: block; }
+        .card-title { font-weight: bold; color: #333; }
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="container">
         <h1>星期八 · 小八</h1>
-        <p>一个懂你、能扛事的职场 AI 伙伴</p >
-    </div>
-    <div class="cards">
-        <div class="card" onclick="sendMsg('生成今日摸鱼报告')">🐟<br>摸鱼气象站</div>
-        <div class="card" onclick="sendMsg('开启老板潜台词翻译')">🔍<br>潜台词翻译</div>
-        <div class="card" onclick="sendMsg('抽取今日上岸好运')">🎁<br>好运盲盒</div>
+        <p class="tagline">一个懂你、能扛事的职场 AI 伙伴</p >
+        <div class="cards">
+            <div class="card" onclick="openChat('生成今日摸鱼报告')">
+                <span class="icon">🐟</span>
+                <div class="card-title">摸鱼气象站</div>
+            </div>
+            <div class="card" onclick="openChat('开启老板潜台词翻译')">
+                <span class="icon">🔍</span>
+                <div class="card-title">潜台词翻译</div>
+            </div>
+            <div class="card" onclick="openChat('抽取今日上岸好运')">
+                <span class="icon">🎁</span>
+                <div class="card-title">好运盲盒</div>
+            </div>
+        </div>
     </div>
 
     <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
     <script>
       const chatClient = new CozeWebSDK.WebChatClient({
-        config: {
-          bot_id: '7632656374320594990',
-        },
-        componentProps: {
-          title: '星期八 · 小八',
-        },
+        config: { bot_id: '7632656374320594990' },
+        componentProps: { title: '星期八 · 小八' },
         auth: {
           type: 'token',
-          token: 'pat_T2qR3IqE8G9z6vH8o6P1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V', // 注意：这里一定要确保是你刚才复制的那串 pat_ 开头的长字符
-          onRefreshToken: function () { return 'pat_T2qR3IqE8G9z6vH8o6P1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V' }
+          // 【这里填入你刚才复制的那串 pat_ 开头的长字符】
+          token: '在这里粘贴你的PAT代码', 
+          onRefreshToken: function () { return '在这里粘贴你的PAT代码' }
         }
       });
 
-      function sendMsg(text) {
-        chatClient.showBot();
-        setTimeout(() => {
-          chatClient.sendMessage({
-            content: text,
-            type: 'text'
-          });
-        }, 500);
+      function openChat(msg) {
+          chatClient.showBot();
+          setTimeout(() => {
+              chatClient.sendMessage({ content: msg, type: 'text' });
+          }, 500);
       }
     </script>
 </body>
