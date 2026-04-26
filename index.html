@@ -37,24 +37,22 @@
     </div>
 
     <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
-    <script>
-      const chatClient = new CozeWebSDK.WebChatClient({
-        config: { bot_id: '7632656374320594990' },
-        componentProps: { title: '星期八 · 小八' },
-        auth: {
-          type: 'token',
-          // 【这里填入你刚才复制的那串 pat_ 开头的长字符】
-          token: '在这里粘贴你的PAT代码', 
-          onRefreshToken: function () { return '在这里粘贴你的PAT代码' }
-        }
-      });
+   <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-sdk/1.0.0-beta.4/index.js"></script>
+<script>
+    // 初始化小八：不需要 pat_token，简单直接
+    const chatClient = new CozeWebSDK.WebChatClient({
+        config: {
+            bot_id: '7632656374320594990', 
+        },
+        componentProps: {
+            title: '星期八 · 小八',
+        },
+    });
 
-      function openChat(msg) {
-          chatClient.showBot();
-          setTimeout(() => {
-              chatClient.sendMessage({ content: msg, type: 'text' });
-          }, 500);
-      }
-    </script>
-</body>
-</html>
+    // 按钮接通逻辑
+    function openChat(msg) {
+        chatClient.showBot();
+        // 如果想让小八自动说话，直接在这里写逻辑
+        // 注意：非登录模式下 sendMessage 权限可能受限，能弹出对话框就是胜利！
+    }
+</script>
