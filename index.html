@@ -3647,7 +3647,40 @@ x-view.card-builder-cici-scroll-view-container::-webkit-scrollbar {
       console.warn('Bot interaction error:', e);
     }
   }
-</script><div><div id="semi-image-preview-group-eh2e" class="semi-image-preview-group"></div><div class="ab1ac9d9bab12da47298" style="position: fixed; --coze-z-index-iframe: 1000;"><img alt="logo" src="./星期八 · 小八 — 你的职场 AI 伙伴_files/chatsdk-logo.png"></div></div>
+<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-sdk/1.0.0-beta.4/index.js"></script>
+<script>
+    const chatClient = new CozeWebSDK.WebChatClient({
+        config: {
+            bot_id: '7632656374320594990', // 这是你的小八 ID
+        },
+        componentProps: {
+            title: '星期八 · 小八',
+        },
+    });
 
+    // 这段是让你的那三个精美按钮“活起来”的关键逻辑
+    function sendMessageToBot(message) {
+        if (chatClient) {
+            chatClient.showBot(); // 先把对话框弹出来
+            setTimeout(() => {
+                // 这里调用 SDK 官方的发送方法，比你之前的逻辑更稳
+                chatClient.sendMessage({
+                    content: message,
+                    type: 'text'
+                });
+            }, 500);
+        }
+    }
 
-<div></div></body></html>
+    // 给你的三个按钮绑定点击事件（确保你的按钮 id 对应上）
+    document.addEventListener('DOMContentLoaded', () => {
+        // 这里的 ID 要和 Claude 帮你生成的按钮 ID 一致，如果不确定，可以直接让 Claude 帮你检查按钮 ID
+        const btn1 = document.querySelector('[alt="摸鱼气象站"]') || document.querySelector('.card:nth-child(1)');
+        const btn2 = document.querySelector('[alt="潜台词翻译"]') || document.querySelector('.card:nth-child(2)');
+        const btn3 = document.querySelector('[alt="好运盲盒"]') || document.querySelector('.card:nth-child(3)');
+
+        if(btn1) btn1.onclick = () => sendMessageToBot('生成今日摸鱼报告');
+        if(btn2) btn2.onclick = () => sendMessageToBot('开启老板潜台词翻译');
+        if(btn3) btn3.onclick = () => sendMessageToBot('抽取今日上岸好运');
+    });
+</script>
